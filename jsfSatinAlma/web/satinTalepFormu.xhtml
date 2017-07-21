@@ -1,0 +1,85 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <style>
+
+        input {
+            width: 450px;
+        }
+
+        body {
+            background-color: white;
+        }
+             
+    </style> 
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Satın Alma Talep</title>
+            </f:facet>
+        </h:head>
+        <h:body>
+
+
+
+            <h:form id="form">
+                <p:growl id="kayit" showDetail="true" />
+
+                <p:panel id="panelform" header="Satın Alma Talep Formu">
+                    <h:panelGrid columns="2" cellpadding="5"> 
+
+                        <h:outputText value="Lütfen Kategori Seçiniz: " />  
+                        <p:selectOneMenu value="#{satinTalepFormu.kat_id}" id="cat" required="true" requiredMessage="Lütfen Kategori Seçin">  
+                            <f:selectItem itemLabel="Kategori Seçin" itemValue="" />
+                            <f:selectItems value="#{satinTalepFormu.categoryName}" /> 
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Tedarikçi Firma:" for="acSimple" />
+                        <p:autoComplete style="width: 350px;" id="acSimple" value="#{satinTalepFormu.unvan}" completeMethod="#{tedarikciListe.complete}" required="true" requiredMessage="Lütfen Tedarikçi Firmayı Giriniz."></p:autoComplete>
+
+                        <p:outputLabel value="Ürün Adı:" for="acSimplel" />
+                        <p:autoComplete style="width: 350px;"  id="acSimplel" value="#{satinTalepFormu.urunAdi}" completeMethod="#{satinTalepFormu.completeUrun}" required="true" requiredMessage="Lütfen Ürün Adını Giriniz." />
+
+                        <p:outputLabel value="Birim Fiyat:" for="birimFiyat" />
+                        <p:inputText  style="width: 100px;" placeholder="0.00" value="#{satinTalepFormu.birimFiyat}" id="birimFiyat" required="true" requiredMessage="Lütfen Birim Fiyatı Giriniz.">
+                            <p:ajax event="keyup" update="toplamTutar" listener="#{satinTalepFormu.kdvsizToplamTutar}" />
+                        </p:inputText>
+
+                        <p:outputLabel value="Adet:" for="adet" />
+                        <p:inputText type="number" placeholder="0" value="#{satinTalepFormu.adet}" style="width: 100px;" id="adet" required="true" requiredMessage="Lütfen Adet Giriniz." >
+                            <p:ajax event="keyup" update="toplamTutar" listener="#{satinTalepFormu.kdvsizToplamTutar}" />
+                        </p:inputText>
+
+                        <p:outputLabel for="kdv" value="KDV:"  />
+                        <p:selectOneRadio id="kdv" value="#{satinTalepFormu.kdv}" required="true" requiredMessage="Lütfen Kdv Seçiniz." >
+                            <p:ajax event="valueChange" update="gelenToplam" listener="#{satinTalepFormu.genelToplamTutar}" />
+                            <f:selectItem itemLabel="%8" itemValue="8" />
+                            <f:selectItem itemLabel="%18" itemValue="18" />
+                        </p:selectOneRadio>
+
+                        <p:outputLabel value="Toplam Tutar:" for="toplamTutar" />
+                        <p:inputText  readonly="true" style="width: 100px;" value="#{satinTalepFormu.toplamTutar}" placeholder="0.00" id="toplamTutar" />
+
+                        <p:outputLabel value="Genel Toplam:" for="gelenToplam" />
+                        <p:inputText  readonly="true" style="width: 100px;" value="#{satinTalepFormu.genelToplam}" placeholder="0.00" id="gelenToplam" />
+
+                        <p:commandButton  value="Temizle" update="panelform" process="@this" actionListener="#{satinTalepFormu.reset}" immediate="true" />
+                        <p:commandButton style="width: 100px;"  value="Kaydet" action="#{satinTalepFormu.satinAlKaydet}" actionListener="#{satinTalepFormu.destroyWorld}" update="kayit"   />
+               </h:panelGrid>                
+                </p:panel>
+
+
+            </h:form>
+
+
+
+        </h:body>
+    </f:view>
+</html>

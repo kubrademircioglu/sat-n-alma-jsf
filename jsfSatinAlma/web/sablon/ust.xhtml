@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      >
+
+
+    <f:view contentType="text/html">
+        <h:head>
+            <h:outputStylesheet library="tema" name="css/style.css"></h:outputStylesheet>
+
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+
+                 <title>Yönetim Sayfası</title>
+            </f:facet>
+        </h:head>
+        
+       
+            
+            <ui:composition>
+      
+        <h:form>
+<p:menubar style="font-size: 16px;">
+
+                    <p:menuitem icon="ui-icon-home" value="AnaSayfa" url="http://localhost:8080/jsfSatinAlma/faces/yonetici.xhtml"></p:menuitem>
+                    <p:submenu label="Yönetim" icon="ui-icon-document">
+                        <p:menuitem id="movieBtn" value="İstek/Talep" />
+                        <p:separator />
+                        <p:submenu label="Kullanıcı" icon="ui-icon-contact">
+                            <p:menuitem value="Kullanıcı Kaydı" url="#" />
+                        </p:submenu>
+                    </p:submenu>
+
+                    <p:submenu label="Rapor" icon="ui-icon-document-b">
+                        <p:menuitem value="Onaylanan" url="http://localhost:8080/jsfSatinAlma/faces/onay_TalepList.xhtml" icon="ui-icon-check" />
+                        <p:menuitem value="İptal Edilen" url="http://localhost:8080/jsfSatinAlma/faces/iptal_TalepList.xhtml" icon="ui-icon-circle-close" />
+                    </p:submenu>
+
+
+                    <f:facet name="options">
+                        <p:outputLabel value="Sayın " style="font-size: 16px; color: royalblue"></p:outputLabel>
+                        <p:outputLabel style="font-size: 16px; margin-right: 5px;  ">[ #{dB.userName} #{dB.userSurName}  ]</p:outputLabel>
+                        <p:outputLabel value="Hoşgeldiniz." style="font-size: 15px; margin-right: 5px; color: royalblue"></p:outputLabel>
+
+                        <p:outputLabel value="Sistem Giriş: " style="font-size: 13px; color: royalblue"></p:outputLabel>
+                        <p:outputLabel value="#{currentDate}" style="margin-right: 5px; font-size: 14px;">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm" type="date" /> 
+
+                        </p:outputLabel>
+
+                        <p:commandButton style="font-size: 14px; "  icon="ui-icon-extlink" value="Çıkış Yap" actionListener="#{loginControl.cikis}"/>
+                    </f:facet>
+                </p:menubar>
+           
+</h:form>
+         </ui:composition>
+    </f:view>
+  
+    
+
+</html>

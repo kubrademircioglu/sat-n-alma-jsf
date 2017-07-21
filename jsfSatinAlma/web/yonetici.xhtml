@@ -1,0 +1,198 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <h:outputStylesheet library="tema" name="css/style.css"></h:outputStylesheet>
+            
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Yönetim Sayfası</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <h:form>  
+                <p:growl id="messages"  sticky="true" showDetail="true" />
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('.ui-growl.ui-widget').delay(3000).slideUp(1000);
+                        $('td textarea').text("");
+                    })
+                </script>
+
+                <p:menubar style="font-size: 16px;">
+
+                    <p:menuitem icon="ui-icon-home" value="AnaSayfa" url="http://localhost:8080/jsfSatinAlma/faces/yonetici.xhtml"></p:menuitem>
+                    <p:submenu label="Yönetim" icon="ui-icon-document">
+                        <p:menuitem id="movieBtn" value="İstek/Talep" />
+                        <p:separator />
+                        <p:submenu label="Kullanıcı" icon="ui-icon-contact">
+                            <p:menuitem value="Kullanıcı Kaydı" url="#" />
+                        </p:submenu>
+                    </p:submenu>
+
+                    <p:submenu label="Rapor" icon="ui-icon-document-b">
+                        <p:menuitem value="Onaylanan" url="http://localhost:8080/jsfSatinAlma/faces/onay_TalepList.xhtml" icon="ui-icon-check" />
+                        <p:menuitem value="İptal Edilen" url="http://localhost:8080/jsfSatinAlma/faces/iptal_TalepList.xhtml" icon="ui-icon-circle-close" />
+                    </p:submenu>
+
+
+                    <f:facet name="options">
+                        <p:outputLabel value="Sayın " style="font-size: 16px; color: royalblue"></p:outputLabel>
+                        <p:outputLabel style="font-size: 16px; margin-right: 5px;  ">[ #{dB.userName} #{dB.userSurName}  ]</p:outputLabel>
+                        <p:outputLabel value="Hoşgeldiniz." style="font-size: 15px; margin-right: 5px; color: royalblue"></p:outputLabel>
+
+                        <p:outputLabel value="Sistem Giriş: " style="font-size: 13px; color: royalblue"></p:outputLabel>
+                        <p:outputLabel value="#{currentDate}" style="margin-right: 5px; font-size: 14px;">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm" type="date" /> 
+
+                        </p:outputLabel>
+
+                        <p:commandButton style="font-size: 14px; "  icon="ui-icon-extlink" value="Çıkış Yap" actionListener="#{loginControl.cikis}"/>
+                    </f:facet>
+                </p:menubar>
+
+
+
+                <p:overlayPanel  id="moviePanel" for="movieBtn" hideEffect="fade" dynamic="true" style="width:600px;" at="right bottom">
+                    <p:dataTable var="movies" value="#{yoneticiListe.listele()}" rows="5" paginator="true">
+                        <p:column headerText="Movie">
+                            <h:outputText value="#{movies.tedarikci_adi}" />
+                        </p:column>
+
+                        <p:column headerText="Directed By">
+                            <h:outputText value="#{movies.kategori_adi}" />
+                        </p:column>
+
+                        <p:column headerText="Genres">
+                            <h:outputText value="#{movies.urun_adi}" />
+                        </p:column>
+
+                        <p:column headerText="Run Time(min.)">
+                            <h:outputText value="#{movies.toplamTutar}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:overlayPanel>
+
+
+
+
+                <p:separator />
+
+                <h:form>
+                    <p:dataTable  var="yonetim" value="#{yoneticiListe.listele()}" rows="6"
+                                  paginator="true"
+                                  rowsPerPageTemplate="15,20,30">
+
+                        <!--          <f:facet name="header">
+                         <p:outputPanel>
+                             
+                             
+                           <p:outputLabel style="font-size:13px;"  for="mask" value="Tarih Aralığı:" />
+                           <p:outputLabel  for="mask1"/>
+                           <p:calendar style="font-size:13px;" id="mask" value="#{yoneticiListe.date}" pattern="dd-MM-yyyy" mask="true" />
+                           <p:calendar style="font-size:13px;" id="mask1" value="#{yoneticiListe.date1}" pattern="dd-MM-yyyy" mask="true" />
+                           <p:commandButton style="font-size:15px;" value="Göster"></p:commandButton>
+                               
+                         </p:outputPanel>
+                     </f:facet>      
+                        -->
+
+                        <p:column headerText="Kategori">
+                            <h:outputText value="#{yonetim.kategori_adi}" />
+                        </p:column>
+
+
+                        <p:column headerText="Tedarikçi">
+                            <h:outputText value="#{yonetim.tedarikci_adi}" />
+                        </p:column>
+
+                        <p:column headerText="Ürün">
+                            <h:outputText value="#{yonetim.urun_adi}" />
+                        </p:column>
+
+                        <p:column headerText="Birim Fiyat" width="80">
+                            <h:outputText value="#{yonetim.birimFiyat}" >
+                                <f:convertNumber type="currency" currencySymbol="TL" />
+                            </h:outputText>
+                        </p:column>
+
+
+
+                        <p:column headerText="Adet" width="60">
+                            <h:outputText value="#{yonetim.adet}" >
+
+                                <f:convertNumber type="number" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="KDV" width="50">
+                            <h:outputText value="#{yonetim.kdv}" >
+                                <f:convertNumber type="number" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Toplam Tutar">
+                            <h:outputText value="#{yonetim.toplamTutar}" >
+                                <f:convertNumber type="currency" currencySymbol="TL" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Genel Toplam">
+                            <h:outputText value="#{yonetim.genelToplam}">
+                                <f:convertNumber type="currency" currencySymbol="TL" />
+
+                            </h:outputText>
+
+                        </p:column>
+                        <p:column headerText="Talep Tarihi" >
+                            <h:outputText value="#{yonetim.tarih}">
+                            </h:outputText>
+
+                        </p:column>
+
+                        <p:column headerText="Talep Eden" >
+                            #{yonetim.insertUserName} #{yonetim.insert_UserSurName}
+                        </p:column>
+
+ 
+                        <p:column headerText="Açıklama">
+                           <h:form>
+                               <p:inputTextarea value="#{yoneticiListe.talepAciklama}" id="sebep"  cols="10" autoResize="true" placeholder="Onay/iptal sebebini giriniz!" />   
+                          </h:form>
+                        </p:column>
+ 
+                        <p:column headerText="İşlemler">
+     
+                            <p:commandButton id="yonetimBttnInfo" action="#{yoneticiListe.talepOnayla(yonetim.satinAlmaId,yoneticiListe.talepAciklama)}" actionListener="#{yoneticiListe.infoOnay}" update="growl"  ajax="false"  icon="ui-icon-circle-check" />
+                                                  
+                            
+                            <span class="ui-separator">
+
+                            </span>            
+                            <p:tooltip style="font-size: 12px;" id="toolTipGrow" for="yonetimBttnInfo" value="Satın Alma Talebini Onayla"
+                                       showEffect="clip" hideEffect="explode" />
+                            <p:commandButton id="ıptalMSG" action="#{yoneticiListe.talepIptalEt(yonetim.satinAlmaId,yoneticiListe.talepAciklama)}" actionListener="#{yoneticiListe.infoIptal}" update="growl"  ajax="false" icon="ui-icon-circle-close" />
+                            <p:tooltip style="font-size: 12px;" id="voll" for="ıptalMSG" value="Satın Alma Talebini İptal Et"
+                                       showEffect="clip" hideEffect="explode" />
+                        </p:column>
+ 
+
+                    </p:dataTable>
+
+
+                </h:form>
+
+            </h:form>
+
+
+
+        </h:body>
+    </f:view>
+</html>
